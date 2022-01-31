@@ -1,9 +1,16 @@
-const { makeMetroConfig } = require('@rnx-kit/metro-config');
-const MetroSymlinksResolver = require('@rnx-kit/metro-resolver-symlinks');
+const blacklist = require('metro-config/src/defaults/exclusionList');
 
-module.exports = makeMetroConfig({
-  projectRoot: __dirname,
-  resolver: {
-    resolveRequest: MetroSymlinksResolver(),
+module.exports = {
+  transformer: {
+    // eslint-disable-next-line require-await
+    getTransformOptions: async () => ({
+      transform: {
+        experimentalImportSupport: false,
+        inlineRequires: false,
+      },
+    }),
   },
-});
+  resolver: {
+    blacklistRE: blacklist([/.bit\/.*/]),
+  },
+};
